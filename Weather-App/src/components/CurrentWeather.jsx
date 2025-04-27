@@ -95,14 +95,14 @@ const CurrentWeather = ({ location }) => {
 
   return (
     
-    <Card sx={{ width: '80%', maxWidth: '95vw', margin: "auto", mt: 4 }}>
+    <Card sx={{ width: '80%', maxWidth: '95vw', margin: "auto", mt: 4, contentAlign: "center" }}>
       <CardContent>
         <Typography variant="h5" gutterBottom>
           {weather.name} 
         </Typography>
         {showCoords && (
           <Typography variant="h6" gutterBottom>
-            Latitude: {weather.coord.lat}, Longitude: {weather.coord.lon}
+            Latitude: {weather.coord.lat} Longitude: {weather.coord.lon}
           </Typography>
         )}
         <Typography variant="h6">
@@ -110,6 +110,8 @@ const CurrentWeather = ({ location }) => {
           {Math.round(weather.main.temp)}° {unit === "metric" ? "C" : "F"} 
           <br></br>
           Feels like {Math.round(weather.main.feels_like)}° {unit === "metric" ? "C" : "F"}
+          <br></br>
+          Condition:
           <br></br>
           {weather.weather[0].description}
         </Typography>

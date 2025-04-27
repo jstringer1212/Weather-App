@@ -41,3 +41,16 @@ export const searchCity = async (cityName) => {
   );
   return response.data;
 };
+
+export const fetchHourlyWeather = async (lat, lon, unit) => {
+  const response = await axios.get(`${BASE_URL}/onecall`, {
+    params: {
+      lat,
+      lon,
+      exclude: "current,minutely,daily,alerts",
+      units: unit,
+      appid: API_KEY,
+    },
+  });
+  return response.data.hourly;
+}
