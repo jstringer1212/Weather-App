@@ -1,6 +1,8 @@
 // src/components/Settings.jsx
 
 import React, { useState, useEffect } from "react";
+import { fetchCurrentWeather } from "../services/weatherApi";
+import { searchCity } from "../services/weatherApi";
 import {
     Typography,
     Button,
@@ -23,13 +25,31 @@ const Settings = () => {
   const [showCoords, setshowCoords] = useState({ lat: null, lon: null });
 
   useEffect(() => {
-    const savedUnit = localStorage.getItem("unit") || "metric";
-    const savedLocation = JSON.parse(localStorage.getItem("homeLocation"));
-    const savedShowCoords = JSON.parse(localStorage.getItem("showCoords")) || false;
-    setshowCoords(savedShowCoords);
-    setUnit(savedUnit);
-    setHomeLocation(savedLocation);
+    const detectUnitByLocation = async () => {
+      try {
+        const location = await searchCity("New York"); 
+        const { lat, lon } = location[0]; 
+        const weatherData = await fetchCurrentWeather(lat, lon);
+        
+        const country = weatherData.sys.country;
+  
+        const defaultUnit = country === "US" ? "imperial" : "metric";
+        setUnit(defaultUnit);
+        localStorage.setItem("unit", defaultUnit);
+      } catch (error) {
+        console.error("Failed to detect unit by location:", error);
+      }
+    };
+  
+    const savedUnit = localStorage.getItem("unit");
+    if (!savedUnit) {
+      detectUnitByLocation();
+    } else {
+      setUnit(savedUnit);
+    }
   }, []);
+  
+  
 
   const handleUnitChange = (e) => {
     const selected = e.target.value;

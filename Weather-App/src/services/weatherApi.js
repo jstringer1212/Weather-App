@@ -12,7 +12,7 @@ export const fetchCurrentWeather = async (lat, lon, unit = "metric") => {
       appid: API_KEY,
     },
   });
-  console.log("API response:", response.data); // Log the API response
+  
   return response.data;
 };
 
